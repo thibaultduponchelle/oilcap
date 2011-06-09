@@ -13,6 +13,7 @@ PARSE_TUBE:
 	call	OIL_PRINT	
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000001b
 	and	(ix)
@@ -36,6 +37,7 @@ pas_de_haut:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000010b
 	and	(ix)
@@ -59,6 +61,7 @@ pas_de_bas:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000100b
 	and	(ix)
@@ -75,20 +78,20 @@ pas_de_bas:
 	and	(ix)		
 	jp	z, fin_du_jeu
 
-	call	PARSE_TUBE
+	call	PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche:
 	pop	bc
 	push	bc
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00001000b
 	and	(ix)
 	jp	z, pas_de_droite	
 
 	; Tester bas puis call avec b + 8
-	push	bc
 	ld	a, b
 	add	a, 8
 	ld	b, a
@@ -138,6 +141,7 @@ PARSE_TUBE_EN_HAUT:
 	call	OIL_PRINT	
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000001b
 	and	(ix)
@@ -162,6 +166,7 @@ y_a_un_bas:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000100b
 	and	(ix)
@@ -178,20 +183,20 @@ y_a_un_bas:
 	and	(ix)		
 	jp	z, fin_du_jeu
 
-	call	PARSE_TUBE
+	call	PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche1:
 	pop	bc
 	push	bc
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00001000b
 	and	(ix)
 	jp	z, pas_de_droite1	
 
 	; Tester bas puis call avec b + 8
-	push	bc
 	ld	a, b
 	add	a, 8
 	ld	b, a
@@ -241,6 +246,7 @@ PARSE_TUBE_A_DROITE:
 	call	OIL_PRINT	
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000001b
 	and	(ix)
@@ -264,6 +270,7 @@ pas_de_haut2:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000010b
 	and	(ix)
@@ -289,13 +296,13 @@ y_a_un_gauche:
 	push	bc
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00001000b
 	and	(ix)
 	jp	z, pas_de_droite2	
 
 	; Tester bas puis call avec b + 8
-	push	bc
 	ld	a, b
 	add	a, 8
 	ld	b, a
@@ -348,6 +355,7 @@ y_a_un_haut:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000010b
 	and	(ix)
@@ -371,6 +379,7 @@ pas_de_bas3:
 	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00000100b
 	and	(ix)
@@ -387,20 +396,20 @@ pas_de_bas3:
 	and	(ix)		
 	jp	z, fin_du_jeu
 
-	call	PARSE_TUBE
+	call	PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche3:
 	pop	bc
 	push	bc
 
 	; Tester la morphologie du tube courant	
+	call	GET_TUBE
 	ld	ix, tube_squelette
 	ld	a, 00001000b
 	and	(ix)
 	jp	z, pas_de_droite3
 
 	; Tester bas puis call avec b + 8
-	push	bc
 	ld	a, b
 	add	a, 8
 	ld	b, a
@@ -427,6 +436,110 @@ perdu3:
 	
 
 pt_fin3:	
+	pop	af
+	pop	bc
+	pop	de
+	pop	hl
+
+	ret
+
+; Parser les tubes en partant de l'emplacement (b,c)
+PARSE_TUBE_A_GAUCHE:
+	push	hl
+	push	de
+	push	bc
+	push	af
+
+	push	bc
+	call	WAITKEY
+	; Recuperer le tube, charger le sprite et afficher
+	call	GET_TUBE
+	call	OIL_LOAD
+	call	OIL_PRINT	
+
+	; Tester la morphologie du tube courant	
+	call	GET_TUBE
+	ld	ix, tube_squelette
+	ld	a, 00000001b
+	and	(ix)
+	jp	z, pas_de_haut4	
+	
+	; Tester haut et call avec c - 8
+	ld	a, c
+	sub	8
+	ld	c, a
+
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00000010b
+	and	(ix)		
+	jp	z, fin_du_jeu
+
+	call	PARSE_TUBE_EN_HAUT
+	
+		
+pas_de_haut4:
+	pop	bc
+	push	bc
+	; Tester la morphologie du tube courant	
+	call	GET_TUBE
+	ld	ix, tube_squelette
+	ld	a, 00000010b
+	and	(ix)
+	jp	z, pas_de_bas4
+
+	; Tester haut et call avec c + 8
+	ld	a, c
+	add	a, 8
+	ld	c, a
+
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00000001b
+	and	(ix)		
+	jp	z, fin_du_jeu
+
+	call	PARSE_TUBE_EN_BAS
+
+
+pas_de_bas4:
+	pop	bc
+	push	bc
+	; Tester la morphologie du tube courant	
+	call	GET_TUBE
+	ld	ix, tube_squelette
+	ld	a, 00000100b
+	and	(ix)
+	jp	z, pas_de_gauche4
+	
+	; Tester bas puis call avec b - 8
+	ld	a, b
+	sub	8
+	ld	b, a
+
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00001000b
+	and	(ix)		
+	jp	z, fin_du_jeu
+
+	call	PARSE_TUBE_A_GAUCHE
+
+pas_de_gauche4:
+y_a_un_droite:
+	pop	bc
+	
+	jp	pt_fin4
+
+perdu4:
+	ld	hl, leak
+	ld	(hl), 0
+	call	_dispHL
+	call	WAITKEY
+	call	WAITKEY
+	
+
+pt_fin4:	
 	pop	af
 	pop	bc
 	pop	de
