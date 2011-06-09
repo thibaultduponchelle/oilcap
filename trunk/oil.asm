@@ -1,3 +1,129 @@
+; Parser les tubes en partant de l'emplacement (b,c)
+PARSE_TUBE:
+	push	hl
+	push	de
+	push	bc
+	push	af
+
+	call	WAITKEY
+	; Recuperer le tube, charger le sprite et afficher
+	call	GET_TUBE
+	call	OIL_LOAD
+	CALL	OIL_PRINT	
+
+	push	bc
+	; Tester la morphologie du tube courant	
+	ld	ix, tube_squelette
+	ld	a, 00000001b
+	and	(ix)
+	jp	z, pas_de_haut	
+	
+	; Tester haut et call avec c - 8
+	ld	a, c
+	sub	8
+	ld	c, a
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00000010b
+	and	(ix)		
+	jp	z, perdu
+
+	call	PARSE_TUBE
+	
+		
+pas_de_haut:
+	pop	bc
+	push	bc
+	; Tester la morphologie du tube courant	
+	ld	ix, tube_squelette
+	ld	a, 00000010b
+	and	(ix)
+	jp	z, pas_de_bas
+
+	; Tester haut et call avec c + 8
+	push	bc
+	ld	a, c
+	add	a, 8
+	ld	c, a
+
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00000001b
+	and	(ix)		
+	jp	z, perdu
+
+	call	PARSE_TUBE
+
+
+pas_de_bas:
+	pop	bc
+	push	bc
+	; Tester la morphologie du tube courant	
+	ld	ix, tube_squelette
+	ld	a, 00000100b
+	and	(ix)
+	jp	z, pas_de_gauche
+	
+	; Tester bas puis call avec b - 8
+	push	bc
+	ld	a, b
+	sub	8
+	ld	b, a
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00001000b
+	and	(ix)		
+	jp	z, perdu
+
+	call	PARSE_TUBE
+	pop	bc
+
+pas_de_gauche:
+	pop	bc
+	push	bc
+	; Tester la morphologie du tube courant	
+	ld	ix, tube_squelette
+	ld	a, 00001000b
+	and	(ix)
+	jp	z, pas_de_droite	
+
+	; Tester bas puis call avec b + 8
+	push	bc
+	ld	a, b
+	add	a, 8
+	ld	b, a
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 00000100b
+	and	(ix)		
+	jp	z, perdu
+
+	call	PARSE_TUBE
+
+
+pas_de_droite:
+	pop	bc
+	
+	jp	pt_fin
+
+perdu:
+	ld	hl, leak
+	ld	(hl), 0
+	call	_dispHL
+	call	WAITKEY
+	call	WAITKEY
+	
+
+pt_fin:	
+	pop	af
+	pop	bc
+	pop	de
+	pop	hl
+
+	ret
+
+; Remplir tout la map avec l'huile
+; On commence a (0, 8) puis on parcours tou le tableau
 FILL_ALL_MAP:
 	push	hl
 	push	de
@@ -24,7 +150,15 @@ fam_loop_x:
 	push	de
 	push	bc
 	push	af
-	
+
+	ld	hl, oilxcoord
+	ld	a, (hl)
+	ld	b, a
+		
+	ld	hl, oilycoord
+	ld	a, (hl)
+	ld	c, a
+
         call    GET_TUBE
         ;call    PRINT_SQUELETTE
         call    OIL_LOAD
@@ -84,14 +218,6 @@ GET_TUBE:
 	push	bc
 	push	af
 
-	ld	hl, oilxcoord
-	ld	a, (hl)
-	ld	b, a
-		
-	ld	hl, oilycoord
-	ld	a, (hl)
-	ld	c, a
-
 	ld	a, b
         srl     a   
         srl     a   
@@ -137,7 +263,63 @@ lecturematrice4:
 
 	ret
 
+; Recuperer le tube sous le curseur (b,c)
+; Et mettre le squelette dans tube_squelette
+GET_TUBE_TEST:
+
+	push	hl
+	push	de
+	push	bc
+	push	af
+
+	ld	a, b
+        srl     a   
+        srl     a   
+        srl     a   
+	ld	b, a
+	push	bc
+	
+	ld	a, c
+	srl	a
+	srl	a
+	srl	a
+	sub	1
+	
+	pop	bc
+	ld	c, a
+
+lecturematrice5:
+	ld a,c   ;\
+	add a,a  ; |
+	add a,a  ; |a=c*16
+	add a,a  ; |
+	add a,a  ;/
+	sub c
+	sub c
+	sub c
+	sub c
+	sub c
+	sub c
+	add a,b	; ajouter le x
+	ld e,a
+	ld d,0
+	ld  hl, map
+	add hl,de
+	ld a,(hl)
+	
+	ld	hl, tube_a_tester
+	ld	(hl), a
+
+	pop	af
+	pop	bc
+	pop	de
+	pop	hl
+
+	ret
+
+	
 ; Afficher la valeur de tube_squelette
+; Il faut recuperer le tube avec GET_TUBE avant
 PRINT_SQUELETTE:
 	push	hl
 	push	de
@@ -168,6 +350,7 @@ PRINT_SQUELETTE:
 
 
 ; A partir du tube_squelette, creer le sprite de remplissage
+; Attention, il faut utiliser GET_TUBE avant
 OIL_LOAD:
 	push	hl
 	push	bc
@@ -222,7 +405,7 @@ no_right2:
 	
 	ret
 
-
+; Afficher l'huile a l'emplacement (b,c)
 OIL_PRINT:
 	push	hl
 	push	bc
@@ -230,9 +413,8 @@ OIL_PRINT:
 	push	af
 
 	; Superposer l'huile	
-	ld	a, (oilycoord)
-	ld	e, a
-	ld	a, (oilxcoord)
+	ld	e, c
+	ld	a, b
 	ld	hl, oil
 	call	DRWSPR
 	call	BUFCOPY
@@ -251,3 +433,10 @@ oilycoord:
 
 tube_squelette:
 	.db 0
+
+tube_a_tester:
+	.db 0
+
+; Passer perdu a 0 signifie la mort
+leak:
+	.db 1
