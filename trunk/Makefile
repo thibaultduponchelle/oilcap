@@ -13,6 +13,3 @@ clean:
 
 .PHONY: all clean
 
-exec: 
-	cd /home/tib/Code/tilem203/trunk/gui
-	./testemu2 -r $(rom) -f /home/tib/Code/z80/OILCAP.83p -m play.txt
