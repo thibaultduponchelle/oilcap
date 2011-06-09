@@ -70,8 +70,6 @@ end
 
 ; Warning, these include MUST be at the end !!!!
 #include "map.asm"
-#include "map_routines.asm"
-
 #include "move.asm"
 #include "timer.asm"
 #include "score.asm"
