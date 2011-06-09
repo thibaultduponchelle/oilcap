@@ -60,7 +60,11 @@ finboucle:
 	;ld	a, 16 
 	;ld	(hl), a
 	;djnz	finboucle
-	call	FILL_ALL_MAP
+	;call	FILL_ALL_MAP
+	
+	ld	b, 32
+	ld	c, 32
+	call	PARSE_TUBE
 
 	call	WAITKEY
 	ret
