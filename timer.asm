@@ -161,7 +161,7 @@ timeup:
 	.db 1
 
 sec:
-	.db 6
+	.db 15
 millisec:
 	.db 100
 	

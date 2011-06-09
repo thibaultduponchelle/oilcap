@@ -5,12 +5,14 @@ PARSE_TUBE:
 	push	bc
 	push	af
 
+	push	bc
 	call	WAITKEY
 	; Recuperer le tube, charger le sprite et afficher
 	call	GET_TUBE
 	call	OIL_LOAD
-	CALL	OIL_PRINT	
+	call	OIL_PRINT	
 
+	pop	bc
 	push	bc
 	; Tester la morphologie du tube courant	
 	ld	ix, tube_squelette
@@ -22,6 +24,7 @@ PARSE_TUBE:
 	ld	a, c
 	sub	8
 	ld	c, a
+
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
@@ -41,7 +44,6 @@ pas_de_haut:
 	jp	z, pas_de_bas
 
 	; Tester haut et call avec c + 8
-	push	bc
 	ld	a, c
 	add	a, 8
 	ld	c, a
@@ -65,10 +67,10 @@ pas_de_bas:
 	jp	z, pas_de_gauche
 	
 	; Tester bas puis call avec b - 8
-	push	bc
 	ld	a, b
 	sub	8
 	ld	b, a
+
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
@@ -76,11 +78,11 @@ pas_de_bas:
 	jp	z, perdu
 
 	call	PARSE_TUBE
-	pop	bc
 
 pas_de_gauche:
 	pop	bc
 	push	bc
+
 	; Tester la morphologie du tube courant	
 	ld	ix, tube_squelette
 	ld	a, 00001000b
