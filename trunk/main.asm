@@ -66,6 +66,7 @@ finboucle:
 	ld	c, 32
 	call	PARSE_TUBE
 
+fin_du_jeu:
 	call	WAITKEY
 	ret
 	.end
