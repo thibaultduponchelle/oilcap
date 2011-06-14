@@ -1,3 +1,24 @@
+; Tester l'entree du premier tube
+CHECK_FIRST_TUBE:
+	push	hl
+	push	de
+	push	bc
+	push	af
+
+	call	GET_TUBE_TEST
+	ld	ix, tube_a_tester
+	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
+	and	(ix)		
+	jp	z, fin_du_jeu 
+	
+	pop	af
+	pop	bc
+	pop	de
+	pop	hl
+	
+	ret
+
+
 ; Parser les tubes en partant de l'emplacement (b,c)
 PARSE_TUBE:
 	push	hl
@@ -6,7 +27,7 @@ PARSE_TUBE:
 	push	af
 
 	push	bc
-	call	WAITKEY
+	;call	WAITKEY
 	; Recuperer le tube, charger le sprite et afficher
 	call	GET_TUBE
 	call	OIL_LOAD
