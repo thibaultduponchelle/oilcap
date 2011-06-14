@@ -1,12 +1,23 @@
 liste:
-	.db 11000011b, 11000011b, 
-	.db 00111100b, 00111100b, 
-	.db 01101001b, 
-	.db 11100001b, 11010010b, 10110100b, 01111000b, 00101101b
-	.db 11000011b, 11000011b, 
-	.db 11000011b, 10010110b, 
-	.db 01111000b, 10000111b, 01001011b, 00101101b, 00011110b,
-	.db 11000011b, 11000011b, 
+	.db 11000011b,	; tube vertical
+	.db 00111100b,  ; tube horizontal 
+	.db 01101001b,  ; coude haut droite 
+	.db 11100001b, 	; U ouvert en haut
+	.db 11010010b,  ; coude haut droite 
+	.db 11000011b,  ; tube vertical
+	.db 01111000b,  ; ouvert a gauche 
+ 	.db 00101101b   ; T ouvert en haut
+	.db 11000011b,  ; tube vertical
+	.db 10110100b,  ; n ouvert en bas
+	.db 11000011b,  ; tube vertical
+	.db 10010110b,  ; coude gauche bas 
+	.db 01111000b,  ; c ouvert a droite
+	.db 10000111b,	; T ouvert a gauche 
+	.db 01001011b,	; T ouvert en droite 
+	.db 00101101b,  ; T ouvert en haut
+	.db 00011110b,  ; T ouvert en bas
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
 	.db 11000011b, 10010110b, 
 	.db 00111100b, 00111100b, 00111100b, 00111100b, 00111100b     
 	.db 11000011b, 11000011b, 

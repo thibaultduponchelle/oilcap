@@ -62,7 +62,7 @@ finboucle:
 	;djnz	finboucle
 	;call	FILL_ALL_MAP
 	
-	ld	b, 32
+	ld	b, 72
 	ld	c, 32
 	call	PARSE_TUBE
 
