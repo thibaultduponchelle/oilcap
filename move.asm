@@ -162,7 +162,8 @@ ok:
 	ld	hl, kflag
 	ld	a, 10
 	ld	(hl), a 	
-
+	
+	ld	ix, liste_level_one
 	call	TUBE_LOAD
 	;call	MATRIX_READ
 	call	UPDATE_SCORE
@@ -172,6 +173,7 @@ ok:
 	;call	GET_TUBE
 	;call	PRINT_SQUELETTE
 	call	TUBE_PRINT
+	ld	ix, liste_level_one
 	call	TUBE_LOAD
 	call	TUBE_PREVIEW_PRINT
 	call	BUFCOPY

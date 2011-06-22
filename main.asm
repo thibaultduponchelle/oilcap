@@ -23,6 +23,12 @@ START:
 	; On met l'index sur le premier tube
 	ld	hl, tub_index
 	ld	(hl), 1
+
+
+	call	TITLE_LOAD
+	call	BUFCOPY
+	call	WAITKEY
+	call	BUFCLR
 	
 	call	FOCUS_INIT
 	call	MAP_LOAD
@@ -31,6 +37,7 @@ START:
 	call	BUFCOPY
 	call	PRINT_HEADER
 	call	UPDATE_TIMER
+	
 	
 loop:	
 	call	MOVE_SCAN_KEY
@@ -64,6 +71,7 @@ finboucle:
 	
 	ld	b, 72
 	ld	c, 32
+	call	CHECK_FIRST_TUBE
 	call	PARSE_TUBE
 
 fin_du_jeu:
@@ -74,6 +82,7 @@ end
 
 
 ; Warning, these include MUST be at the end !!!!
+#include "title.asm"
 #include "map.asm"
 #include "move.asm"
 #include "timer.asm"
