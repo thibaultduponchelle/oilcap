@@ -16,7 +16,7 @@ TUBE_LOAD:
 	ld	hl, tub_index
 	ld	a, (hl)
 	ld	b, a
-	ld	ix, liste
+	;ld	ix, liste
 	dec	ix
 
 inc_ix:

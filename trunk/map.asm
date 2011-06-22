@@ -165,7 +165,7 @@ lecturematrice2:
 	ld	hl, tub_index
 	ld	a, (hl)
 	ld	b, a
-	ld	ix, liste
+	ld	ix, liste_level_one
 	dec	ix
 
 inc_ix2:

@@ -128,17 +128,6 @@ pas_de_gauche:
 pas_de_droite:
 	pop	bc
 	
-	jp	pt_fin
-
-perdu:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
-pt_fin:	
 	pop	af
 	pop	bc
 	pop	de
@@ -233,17 +222,6 @@ pas_de_gauche1:
 pas_de_droite1:
 	pop	bc
 	
-	jp	pt_fin1
-
-perdu1:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
-pt_fin1:	
 	pop	af
 	pop	bc
 	pop	de
@@ -339,17 +317,6 @@ y_a_un_gauche:
 pas_de_droite2:
 	pop	bc
 	
-	jp	pt_fin2
-
-perdu2:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
-pt_fin2:	
 	pop	af
 	pop	bc
 	pop	de
@@ -446,17 +413,6 @@ pas_de_gauche3:
 pas_de_droite3:
 	pop	bc
 	
-	jp	pt_fin3
-
-perdu3:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
-pt_fin3:	
 	pop	af
 	pop	bc
 	pop	de
@@ -550,17 +506,6 @@ pas_de_gauche4:
 y_a_un_droite:
 	pop	bc
 	
-	jp	pt_fin4
-
-perdu4:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
-pt_fin4:	
 	pop	af
 	pop	bc
 	pop	de
