@@ -26,8 +26,6 @@ START:
 
 
 	call	TITLE_LOAD
-	call	BUFCOPY
-	call	WAITKEY
 	call	BUFCLR
 	
 	call	FOCUS_INIT
