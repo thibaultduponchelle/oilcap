@@ -5,9 +5,7 @@
 ; Si seconde = 0, mettre timeup a 0
 UPDATE_TIMER:
 	push	hl
-	push	de
 	push	af
-	push	bc	
 
 	ld	hl, timeup
 	ld	a, l
@@ -25,12 +23,10 @@ moins_une_milliseconde:
 	ld	hl, millisec
 	ld	a, (hl)
 	dec	a
-	jp	z, moins_une_seconde
+	jp	z, moins_une_seconde  ; Tiens on viens de finir une seconde
 	ld	(hl), a
 	ld	hl, microsec
-	ld	a,(hl)
-	ld	a, 100
-	ld	(hl), a
+	ld	(hl), 100
 	call	PRINT_MILLISEC
 	call	PRINT_SEC
 	call	UNLOCK_KFLAG
@@ -43,9 +39,7 @@ moins_une_seconde:
 	jp	z, temps_ecoule
 	ld	(hl), a
 	ld	hl, millisec
-	ld	a,(hl)
-	ld	a, 100
-	ld	(hl), a
+	ld	(hl), 100
 	call	PRINT_SEC
 	jp	fin_timer
 
@@ -54,9 +48,7 @@ temps_ecoule:
 	ld	(hl), 0
 
 fin_timer:
-	pop	bc
 	pop	af
-	pop	de
 	pop	hl
 
 	ret	
