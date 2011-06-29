@@ -458,6 +458,7 @@ PROTECT_ARENA:
 	jp	place_valide
 
 hors_arene:
+	; Ici on restaure l'ancien placement (pour eviter la sortie d'arene)
 	ld	a, (oldxcoord)
 	ld	(xcoord), a
 	ld	a, (oldycoord)
