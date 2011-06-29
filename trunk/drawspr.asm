@@ -441,19 +441,15 @@ boucle2:
 
 	ret
 
+; Cette routine permet d'eviter qu'on sorte de l'arene
 PROTECT_ARENA:
 
-	push	hl
-	push	de
-	
-	ld	hl,(xcoord)
-	ld	a, l
+	ld	a,(xcoord)
 	cp 	0
 	jp	m, hors_arene
 	cp	80
 	jp	p, hors_arene
-	ld	hl,(ycoord)
-	ld	a, l
+	ld	a,(ycoord)
 	cp 	8
 	jp	m, hors_arene
 	cp	64
@@ -462,15 +458,12 @@ PROTECT_ARENA:
 	jp	place_valide
 
 hors_arene:
-	ld	hl, (oldxcoord)
-	ld	de, (oldycoord)
-	ld	(xcoord), hl
-	ld	(ycoord), de
+	ld	a, (oldxcoord)
+	ld	(xcoord), a
+	ld	a, (oldycoord)
+	ld	(ycoord), a
 
 place_valide:
-	pop	de
-	pop	hl
-
 	
 	ret
 

@@ -3,11 +3,11 @@
 #include "ti83asm.inc"
 #include "tokens.inc"
 #define xcoord	8270h
-#define ycoord	8272h
-#define oldxcoord	8274h
-#define oldycoord	8276h
-#define select_flag	8278h
-#define tub_index	827Ah
+#define ycoord	8271h
+#define oldxcoord	8272h
+#define oldycoord	8273h
+#define select_flag	8274h
+#define tub_index	8275h
 
 .list
 

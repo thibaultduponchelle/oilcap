@@ -3,27 +3,22 @@
 FOCUS_INIT:
 	; init the start position
 	push hl
-	push de
 	
 	ld hl, 16
 	ld (xcoord), hl
 	ld (oldxcoord), hl
-	ld de, 8
-	ld (ycoord), de
-	ld (oldycoord), de
+	ld hl, 16
+	ld (ycoord), hl
+	ld (oldycoord), hl
 	
 	call FOCUS_PRINT	
 
-	pop de
 	pop hl
 
 	ret
 
 ;; Scan key using direct input
 MOVE_SCAN_KEY:
-	push hl
-	push de
-	push bc
 	;ld     a,$FF            ; Before any action, reset the keyport
         ;out    (1),a            ; ...by sending to the port 1 the value 255 (FF
 	ld     a,$FE            ; select the keyboard group to scan (here the arrow keys)
@@ -42,47 +37,35 @@ MOVE_SCAN_KEY:
 	
 ; Callback depending on key pressed	
 top:
-	ld hl,(ycoord)
-	ld a, l
+	ld a,(ycoord)
 	sub 8
-	ld l, a
-	ld (ycoord),hl
+	ld (ycoord),a
 	jp print
 bot:
-	ld hl,(ycoord)
-	ld a, l
+	ld a,(ycoord)
 	add a,8
-	ld l, a
-	ld (ycoord),hl
+	ld (ycoord),a
 	jp print
 right:
-	ld hl,(xcoord)
-	ld a, l
+	ld a,(xcoord)
 	add a,8
-	ld l, a
-	ld (xcoord),hl
+	ld (xcoord),a
 	jp print
 left:
-	ld hl,(xcoord)
-	ld a, l
+	ld a,(xcoord)
 	sub 8
-	ld l, a
-	ld (xcoord),hl
+	ld (xcoord),a
 	jp print
 
 ; Passe ici seulement si key press
 print:
-	ld	hl,(xcoord)
-	ld 	de,(ycoord)
-	ld	a,l
+	ld	a,(xcoord)
+	ld 	e,(ycoord)
 	call	PROTECT_ARENA
 
 	call FOCUS_PRINT
 
 finloop:
-	pop 	bc
-	pop 	de
-	pop	hl
 	
 	ret
 
@@ -94,9 +77,6 @@ FOCUS_PRINT:
 
 	ld	hl,(xcoord)
 	ld 	de,(ycoord)
-	ld	a,l
-	;call	PROTECT_ARENA
-	;call	PROTECT_BLOCK
 
 	; effacer la tout le sprite (on l'affichera un pixel plus loin apres)	
 	ld	hl,(oldxcoord)
