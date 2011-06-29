@@ -68,18 +68,6 @@ oclock:
 	.db 01000010b
 	.db 00111100b
 
-
-
-block2:
-	.db 11100111b
-	.db 10000001b
-	.db 10000001b
-	.db 00000000b
-	.db 00000000b
-	.db 10000001b
-	.db 10000001b
-	.db 11100111b
-
 block:
 	.db 11111111b
 	.db 10000001b
@@ -90,18 +78,6 @@ block:
 	.db 10000001b
 	.db 11111111b
 
-
-
-
-focus2:
-	.db 00000000b
-	.db 01000010b
-	.db 00100100b
-	.db 00011000b
-	.db 00011000b
-	.db 00100100b
-	.db 01000010b
-	.db 00000000b
 focus:
 	.db 00000000b
 	.db 01000010b
@@ -123,7 +99,7 @@ robinet:
 	.db 00000000b
 	.db 00000000b
 
-
+; ce sprite contiendra par superpositions successives le sprite d'huile final
 oil:
 	.db 00000000b
 	.db 00000000b
@@ -176,9 +152,7 @@ oil_right:
 	.db 00000000b
 
 
-
-
-
+; Ce sprite contiendra par superpositions (or) le tube final
 tub:
 	.db 00000000b
 	.db 00000000b
@@ -189,7 +163,7 @@ tub:
 	.db 00000000b
 	.db 00000000b
 
-
+; Ce sprite sert a remettre les sprites oil et tub a vide
 blank:
 	.db 00000000b
 	.db 00000000b
@@ -208,17 +182,6 @@ black:
 	.db 11111111b
 	.db 11111111b
 	.db 11111111b
-blackk:
-	.db 00000000b
-	.db 01111110b
-	.db 01111110b
-	.db 01111110b
-	.db 01111110b
-	.db 01111110b
-	.db 01111110b
-	.db 01111110b
-	.db 00000000b
-
 
 
 tub_top:
@@ -264,6 +227,7 @@ tub_right:
 	.db 00000000b
 
 
+; Les sprites d'arret
 tub_topc:
 	.db 00000000b
 	.db 00000000b
