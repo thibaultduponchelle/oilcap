@@ -69,24 +69,18 @@ finloop:
 	
 	ret
 
-
+; On affiche le curseur
 FOCUS_PRINT:
-	push	hl
-	push	de
-	push	af
-
-	ld	hl,(xcoord)
-	ld 	de,(ycoord)
 
 	; effacer la tout le sprite (on l'affichera un pixel plus loin apres)	
-	ld	hl,(oldxcoord)
+	ld	a,(oldxcoord)
 	ld 	de,(oldycoord)
-	ld	a,l
+	ld	d,0
 	ld	hl, focus
 	call	CLRSPR
-	call 	BUFCOPY
-	call	PRINT_MILLISEC
-	CALL	PRINT_SEC
+	;call 	BUFCOPY
+	;call	PRINT_MILLISEC
+	;CALL	PRINT_SEC
 
 	
 	; afficher nouveau sprite
@@ -101,21 +95,12 @@ FOCUS_PRINT:
 	CALL	PRINT_MILLISEC
 	CALL	PRINT_SEC
 
-
-	pop	af
-	pop	de
-	pop	hl
-
 	ret
 
 
 
 ; Test if the player selects a block  
 SELECT_SCAN_KEY:
-	push 	hl
-	push 	de
-	push 	bc
-	push 	af
 	ld     a,$FF          
         out    (1),a           
 	ld     a,$FD       	; scanner le groupe
@@ -162,10 +147,6 @@ ok:
 	
 
 select_end:
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
 
 	ret
 
