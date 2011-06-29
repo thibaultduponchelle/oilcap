@@ -53,61 +53,29 @@ fin_timer:
 
 	ret	
 	
-
+; Affichage des millisec 
 PRINT_MILLISEC:
-	push	hl
-	push	de
-	push	af
-	push	bc	
 
-	ld     hl, 0
+	ld     hl, $0B00   ; Copie 0 dans CURROW et 11 dans CURCOL (optimisation de deeph)
 	ld     (CURROW),hl
-	ld     hl, 11
-	ld     (CURCOL),hl
 	ld     hl, (millisec)
 	ld	h, 0
 	call	_dispHL	
-	;call	WAITKEY
-
-
-
-	pop	bc
-	pop	af
-	pop	de
-	pop	hl
 
 	ret	
 
-
+; Affichage des secondes 
 PRINT_SEC:
-	push	hl
-	push	de
-	push	af
-	push	bc	
-
-	ld     hl, 0
+	ld     hl, $0600
 	ld     (CURROW),hl
-	ld     hl, 6
-	ld     (CURCOL),hl
 	ld     hl, (sec)
 	ld	h, 0
 	call	_dispHL	
-	;call	WAITKEY
 	
-
-	pop	bc
-	pop	af
-	pop	de
-	pop	hl
-
 	ret	
 
+; Deverouiller le flag qui empeche la pose involontaire de multiples tubes
 UNLOCK_KFLAG:
-	push	hl
-	push	de
-	push	af
-	push	bc	
-
 	ld	hl, kflag
 	ld	a, (hl)
 	cp	0
@@ -117,10 +85,6 @@ UNLOCK_KFLAG:
 
 ne_rien_faire:
 	call	PRINT_SCORE
-	pop	bc
-	pop	af
-	pop	de
-	pop	hl
 
 	ret	
 
