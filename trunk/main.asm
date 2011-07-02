@@ -6,7 +6,6 @@
 #define ycoord	8271h
 #define oldxcoord	8272h
 #define oldycoord	8273h
-#define select_flag	8274h
 #define tub_index	8275h
 
 .list
@@ -17,24 +16,19 @@ START:
         ; Turn the indicator to off and clear screen
 	call    RINDOFF         ; Turn off runindicator
 	call	BUFCLR
-	ld	hl, select_flag
-	ld	(hl), 0
 	
 	; On met l'index sur le premier tube
 	ld	hl, tub_index
 	ld	(hl), 1
-
 
 	call	TITLE_LOAD
 	call	BUFCLR
 	
 	call	FOCUS_INIT
 	call	MAP_LOAD
-	;call	TUBE_LOAD
-	;call	TUBE_PREVIEW_PRINT
-	call	BUFCOPY
-	call	PRINT_HEADER
+	call	PRINT_OCLOCK
 	call	UPDATE_TIMER
+	call	BUFCOPY
 	
 	
 loop:	
@@ -42,8 +36,7 @@ loop:
 	call	SELECT_SCAN_KEY
 
 	; Verifier que le temps n'est pas ecoule...
-	ld	hl, (timeup)
-	ld	a, l
+	ld	a, (timeup)
 	or	a
 	jp 	z, fin
 	

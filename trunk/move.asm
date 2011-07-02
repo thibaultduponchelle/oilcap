@@ -2,18 +2,15 @@
 ; By default, nothing is selected
 FOCUS_INIT:
 	; init the start position
-	push hl
 	
-	ld hl, 16
-	ld (xcoord), hl
-	ld (oldxcoord), hl
-	ld hl, 16
-	ld (ycoord), hl
-	ld (oldycoord), hl
+	ld a, 16
+	ld (xcoord), a
+	ld (oldxcoord), a
+	ld a, 16
+	ld (ycoord), a
+	ld (oldycoord), a
 	
 	call FOCUS_PRINT	
-
-	pop hl
 
 	ret
 
@@ -78,11 +75,7 @@ FOCUS_PRINT:
 	ld	d,0
 	ld	hl, focus
 	call	CLRSPR
-	;call 	BUFCOPY
-	;call	PRINT_MILLISEC
-	;CALL	PRINT_SEC
 
-	
 	; afficher nouveau sprite
 	ld 	hl,(xcoord)
 	ld 	de,(ycoord)
@@ -130,22 +123,18 @@ ok:
 	
 	ld	ix, liste_level_one
 	call	TUBE_LOAD
-	;call	MATRIX_READ
 	call	UPDATE_SCORE
 	call	PRINT_SCORE
 	call	MATRIX_SAVE_BLOCK
-	;call	MATRIX_READ
-	;call	GET_TUBE
-	;call	PRINT_SQUELETTE
 	call	TUBE_PRINT
-	ld	ix, liste_level_one
+	ld	ix, liste_level_one   ;FIXME
 	call	TUBE_LOAD
 	call	TUBE_PREVIEW_PRINT
+	;SET	bufferOnly, (IY + plotFlag3)
 	call	BUFCOPY
 	CALL	PRINT_MILLISEC
 	CALL	PRINT_SEC
 	
-
 select_end:
 
 	ret

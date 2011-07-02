@@ -1,26 +1,22 @@
 COORD_RESET:
-	ld	hl, 0
-	ld	(xcoord), hl
-        ld 	de, 0
-        ld 	(ycoord), de
+	ld	a, 0
+	ld	(xcoord), a
+        ld 	a, 0
+        ld 	(ycoord), a
 	ret
 
 COORD_DEPLACE_A_DROITE:
-	ld	hl, (xcoord)
-	ld	a, l
+	ld	a, (xcoord)
 	add	a, 8
-	ld	l, a
-        ld 	(xcoord), hl
+        ld 	(xcoord), a
 	ret	
 
 COORD_RETOUR_A_LA_LIGNE:
-	ld	hl, 0
-        ld 	(xcoord), hl
-	ld	hl, (ycoord)
-	ld	a, l
+	ld	a, 0
+        ld 	(xcoord), a
+	ld	a, (ycoord)
 	add	a, 8
-	ld	l, a
-	ld	(ycoord), hl
+	ld	(ycoord), a
 	ret	
 	
 
@@ -82,8 +78,8 @@ tl_fin:
 	
 	call	WAITKEY
 	
-	ld	hl, 1
-	ld	(tub_index), hl
+	ld	a, 1
+	ld	(tub_index), a
 
 	pop	af
 	pop	bc
