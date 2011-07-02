@@ -78,7 +78,7 @@ PRINT_SEC:
 UNLOCK_KFLAG:
 	ld	hl, kflag
 	ld	a, (hl)
-	cp	0
+	or	a
 	jp	z, ne_rien_faire
 	dec	a
 	ld	(hl), a
@@ -88,15 +88,8 @@ ne_rien_faire:
 
 	ret	
 
-
-
-
-
-PRINT_HEADER:
-	push	hl
-	push	de
-	push	af
-	push	bc	
+; Afficher l'horloge (sprite) 
+PRINT_OCLOCK:
 
 	ld	a, 8
 	ld	e, a
@@ -104,22 +97,20 @@ PRINT_HEADER:
 	ld	hl, oclock
 	call	DRWSPR	
 	
-
-	pop	bc
-	pop	af
-	pop	de
-	pop	hl
-
 	ret
 
-	
+; Timeup est a 0 si le temps est ecoule	
 timeup:
 	.db 1
 
+; Le nombre de secondes
 sec:
 	.db 15
+
+; Le nombre de millisecondes
 millisec:
 	.db 100
-	
+
+; Le nombre de microsecondes (non affiche)
 microsec:	
 	.db 100
