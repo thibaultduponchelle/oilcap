@@ -16,7 +16,6 @@ TUBE_LOAD:
 	ld	hl, tub_index
 	ld	a, (hl)
 	ld	b, a
-	;ld	ix, liste
 	dec	ix
 
 inc_ix:
@@ -220,7 +219,7 @@ cpyloop:
 ; Used to do not erase score and timer
 FASTCOPY: 
 	di 
-	ld hl,PLOTSSCREEN-12-(-(12*64)+1) 
+	ld hl,PLOTSSCREEN-24-(-(12*64)+1) 
 	ld a,$20 
 	ld c,a 
 fastCopyAgain: 

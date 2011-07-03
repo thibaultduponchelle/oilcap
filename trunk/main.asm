@@ -79,5 +79,6 @@ end
 #include "timer.asm"
 #include "score.asm"
 #include "oil.asm"
+#include "level.asm"
 #include "sprites.asm"
 #include "drawspr.asm"

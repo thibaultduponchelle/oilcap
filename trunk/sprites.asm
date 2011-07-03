@@ -58,6 +58,46 @@ liste_level_one:
 	.db 00011110b, 00001100b, 11000011b, 00001101b, 00001101b
 	.db 00011110b, 00001100b, 11000011b, 00001101b, 00001101b
 
+liste_level_two:
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11000011b,  ; tube vertical
+	.db 11000011b,  ; tube vertical
+
+liste_level_three:
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+	.db 00111100,
+
+
+
+
 oclock:
 	.db 00111100b
 	.db 01000010b
