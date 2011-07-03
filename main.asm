@@ -20,10 +20,13 @@ START:
 	; On met l'index sur le premier tube
 	ld	hl, tub_index
 	ld	(hl), 1
-
 	call	TITLE_LOAD
 	call	BUFCLR
-	
+
+game:	
+	; On met l'index sur le premier tube
+	ld	hl, tub_index
+	ld	(hl), 1
 	call	FOCUS_INIT
 	call	MAP_LOAD
 	call	PRINT_OCLOCK
