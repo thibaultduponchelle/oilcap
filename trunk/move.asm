@@ -1,8 +1,7 @@
 ; Init the start position of the focus
-; By default, nothing is selected
 FOCUS_INIT:
-	; init the start position
-	
+
+	; start at (16, 16)	
 	ld a, 16
 	ld (xcoord), a
 	ld (oldxcoord), a
@@ -10,6 +9,7 @@ FOCUS_INIT:
 	ld (ycoord), a
 	ld (oldycoord), a
 	
+	; print the focus
 	call FOCUS_PRINT	
 
 	ret
