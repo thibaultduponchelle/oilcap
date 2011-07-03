@@ -84,7 +84,8 @@ FOCUS_PRINT:
 	ld 	a,l
 	ld 	hl, focus
 	call 	DRWSPR
-	call 	BUFCOPY
+	;call 	BUFCOPY
+	call	FASTCOPY
 	CALL	PRINT_MILLISEC
 	CALL	PRINT_SEC
 
@@ -131,7 +132,8 @@ ok:
 	call	TUBE_LOAD
 	call	TUBE_PREVIEW_PRINT
 	;SET	bufferOnly, (IY + plotFlag3)
-	call	BUFCOPY
+	;call	BUFCOPY
+	call	FASTCOPY
 	CALL	PRINT_MILLISEC
 	CALL	PRINT_SEC
 	

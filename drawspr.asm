@@ -213,6 +213,40 @@ cpyloop:
 	djnz	cpyloop
 	
 	ret
+
+
+
+; Modified version (by chickendude) of notorious ionFastCopy routine
+; Used to do not erase score and timer
+FASTCOPY: 
+	di 
+	ld hl,PLOTSSCREEN-12-(-(12*64)+1) 
+	ld a,$20 
+	ld c,a 
+fastCopyAgain: 
+	ld b,56 
+	inc c 
+	ld de,-(12*56)+1 
+	out ($10),a 
+	add hl,de 
+	ld de,10 
+	call $000B 
+	ld a,$88 
+	out ($10),a 
+fastCopyLoop: 
+	add hl,de 
+	inc hl  ;filler 
+	inc hl  ;filler 
+	inc de ;filler 
+	ld a,(hl) 
+	out ($11),a 
+	dec de ;filler 
+	djnz fastCopyLoop 
+	ld a,c 
+	cp $2B+1 
+	jr nz,fastCopyAgain 
+
+	ret
 	
 
 ;ÃœÃ›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›ÃŸ DRWSPR ÃŸÃ›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›Ã›
