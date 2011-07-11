@@ -1,16 +1,58 @@
+PERDU:
+	push	af
+	push	hl
+	call	BUFCLR
+	call	BUFCOPY
+	ld       hl,24
+        ld       (pencol),hl    ;charge la valeur de la ligne de texte sur l'écran
+        ld       hl,45
+        ld       (penrow),hl    ;charge la valeur de la colone de texte.
+        ld       hl,lost	;charge l'adresse du texte dans hl
+        call    _vputs          ;appelle la rom call puts
+	pop	hl
+	pop	af
+
+	ret
+
+lost:
+	.db "perdu !!!", 0
+
+
+FIN_PARSING:
+	ld	a, 0
+	ld	(leak), a
+	call	BUFCLR
+	call	BUFCOPY
+	
+	call	PERDU
+	call	WAITKEY
+	
+	pop	bc
+	
+	pop	af
+	pop	bc
+	pop	de
+	pop	hl
+
+	ret
+
+
+
 ; Tester l'entree du premier tube
 CHECK_FIRST_TUBE:
 	push	hl
 	push	de
 	push	bc
 	push	af
+	push	bc
 
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
 	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
 	and	(ix)		
-	jp	z, fin_du_jeu 
-	
+	jp	z, FIN_PARSING  
+
+	pop	bc
 	pop	af
 	pop	bc
 	pop	de
@@ -27,7 +69,6 @@ PARSE_TUBE:
 	push	af
 
 	push	bc
-	;call	WAITKEY
 	; Recuperer le tube, charger le sprite et afficher
 	call	GET_TUBE
 	call	OIL_LOAD
@@ -49,10 +90,9 @@ PARSE_TUBE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_HAUT
-	
 		
 pas_de_haut:
 	pop	bc
@@ -73,7 +113,7 @@ pas_de_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_BAS
 
@@ -97,7 +137,7 @@ pas_de_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_GAUCHE
 
@@ -120,7 +160,7 @@ pas_de_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_DROITE
 
@@ -166,7 +206,7 @@ PARSE_TUBE_EN_HAUT:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_HAUT
 	
@@ -191,7 +231,7 @@ y_a_un_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_GAUCHE
 
@@ -214,7 +254,7 @@ pas_de_gauche1:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_DROITE
 
@@ -260,7 +300,7 @@ PARSE_TUBE_A_DROITE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_HAUT
 	
@@ -284,7 +324,7 @@ pas_de_haut2:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_BAS
 
@@ -309,7 +349,7 @@ y_a_un_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_DROITE
 
@@ -358,7 +398,7 @@ y_a_un_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_BAS
 
@@ -382,7 +422,7 @@ pas_de_bas3:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_GAUCHE
 
@@ -405,7 +445,7 @@ pas_de_gauche3:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_DROITE
 
@@ -450,7 +490,7 @@ PARSE_TUBE_A_GAUCHE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_HAUT
 	
@@ -474,7 +514,7 @@ pas_de_haut4:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_EN_BAS
 
@@ -498,7 +538,7 @@ pas_de_bas4:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	jp	z, FIN_PARSING
 
 	call	PARSE_TUBE_A_GAUCHE
 

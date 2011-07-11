@@ -56,11 +56,20 @@ left:
 
 ; Passe ici seulement si key press
 print:
+	ei
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
+	halt
 	ld	a,(xcoord)
 	ld 	e,(ycoord)
 	call	PROTECT_ARENA
 
-	call FOCUS_PRINT
+	call 	FOCUS_PRINT
+	;call	WAITKEY
 
 finloop:
 	
