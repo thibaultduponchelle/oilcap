@@ -105,7 +105,7 @@ timeup:
 
 ; Le nombre de secondes
 sec:
-	.db 15
+	.db 5
 
 ; Le nombre de millisecondes
 millisec:
