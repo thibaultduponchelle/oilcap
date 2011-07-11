@@ -28,6 +28,7 @@ game:
 	ld	hl, tub_index
 	ld	(hl), 1
 	call	FOCUS_INIT
+	;call	INIT
 	call	MAP_LOAD
 	call	PRINT_OCLOCK
 	call	UPDATE_TIMER
@@ -53,20 +54,22 @@ fin:
 
 finboucle:
 	call	WAITKEY
-	;call	GET_TUBE
-	;call	PRINT_SQUELETTE
-	;call	OIL_LOAD
-	;call	OIL_PRINT
-	;ld	hl, oilxcoord
-	;ld	a, 16 
-	;ld	(hl), a
-	;djnz	finboucle
-	;call	FILL_ALL_MAP
-	
 	ld	b, 72
 	ld	c, 32
+	; Verifier le premier tube
 	call	CHECK_FIRST_TUBE
-	call	PARSE_TUBE
+	ld	a, (leak)
+	cp	0
+	call	nz, PARSE_TUBE ; verifier les suivants
+	
+	;ld	a, (leak)
+	;or	a
+	;call	nz, NEXT_LEVEL
+	ld	a, (leak)
+	cp	0
+	jp	nz, fin_du_jeu
+	jp	game
+	
 
 fin_du_jeu:
 	call	WAITKEY
@@ -85,3 +88,4 @@ end
 #include "level.asm"
 #include "sprites.asm"
 #include "drawspr.asm"
+#include "init.asm"
