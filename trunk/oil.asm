@@ -44,15 +44,13 @@ CHECK_FIRST_TUBE:
 	push	de
 	push	bc
 	push	af
-	push	bc
 
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
-	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
+	ld	a, 00001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
 	and	(ix)		
 	jp	z, FIN_PARSING  
 
-	pop	bc
 	pop	af
 	pop	bc
 	pop	de
@@ -69,10 +67,13 @@ PARSE_TUBE:
 	push	af
 
 	push	bc
+	call	WAITKEY
 	; Recuperer le tube, charger le sprite et afficher
 	call	GET_TUBE
 	call	OIL_LOAD
 	call	OIL_PRINT	
+
+;;;TESTER EN HAUT
 
 	; Tester la morphologie du tube courant	
 	call	GET_TUBE
@@ -92,11 +93,17 @@ PARSE_TUBE:
 	and	(ix)		
 	jp	z, FIN_PARSING
 
-	call	PARSE_TUBE_EN_HAUT
+	; Sauver l'origine 
+	ld	a, 00001000b
+	ld	(origine), a
+	call	PARSE_TUBE
 		
 pas_de_haut:
 	pop	bc
 	push	bc
+
+;;;TESTER EN BAS
+	
 	; Tester la morphologie du tube courant	
 	call	GET_TUBE
 	ld	ix, tube_squelette
@@ -115,16 +122,23 @@ pas_de_haut:
 	and	(ix)		
 	jp	z, FIN_PARSING
 
-	call	PARSE_TUBE_EN_BAS
+	; Sauver l'origine 
+	ld	a, 00000100b
+	ld	(origine), a
+	call	PARSE_TUBE
 
 
 pas_de_bas:
 	pop	bc
 	push	bc
+
+	
+;;;TESTER A GAUCHE
+
 	; Tester la morphologie du tube courant	
 	call	GET_TUBE
 	ld	ix, tube_squelette
-	ld	a, 00000100b
+	ld	a, 0000100b
 	and	(ix)
 	jp	z, pas_de_gauche
 	
@@ -139,11 +153,16 @@ pas_de_bas:
 	and	(ix)		
 	jp	z, FIN_PARSING
 
-	call	PARSE_TUBE_A_GAUCHE
+	; Sauver l'origine 
+	ld	a, 00000001b
+	ld	(origine), a
+	call	PARSE_TUBE
 
 pas_de_gauche:
 	pop	bc
 	push	bc
+
+;;;TESTER A DROITE
 
 	; Tester la morphologie du tube courant	
 	call	GET_TUBE
@@ -162,7 +181,10 @@ pas_de_gauche:
 	and	(ix)		
 	jp	z, FIN_PARSING
 
-	call	PARSE_TUBE_A_DROITE
+	; Sauver l'origine 
+	ld	a, 00000010b
+	ld	(origine), a
+	call	PARSE_TUBE
 
 
 pas_de_droite:
@@ -175,388 +197,12 @@ pas_de_droite:
 
 	ret
 
-
-; Parser les tubes en partant de l'emplacement (b,c)
-PARSE_TUBE_EN_HAUT:
-	push	hl
-	push	de
-	push	bc
-	push	af
-
-	push	bc
-	call	WAITKEY
-	; Recuperer le tube, charger le sprite et afficher
-	call	GET_TUBE
-	call	OIL_LOAD
-	call	OIL_PRINT	
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000001b
-	and	(ix)
-	jp	z, pas_de_haut1	
-	
-	; Tester haut et call avec c - 8
-	ld	a, c
-	sub	8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000010b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_HAUT
-	
-		
-pas_de_haut1:
-y_a_un_bas:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000100b
-	and	(ix)
-	jp	z, pas_de_gauche1
-	
-	; Tester bas puis call avec b - 8
-	ld	a, b
-	sub	8
-	ld	b, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00001000b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_GAUCHE
-
-pas_de_gauche1:
-	pop	bc
-	push	bc
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00001000b
-	and	(ix)
-	jp	z, pas_de_droite1	
-
-	; Tester bas puis call avec b + 8
-	ld	a, b
-	add	a, 8
-	ld	b, a
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000100b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_DROITE
-
-
-pas_de_droite1:
-	pop	bc
-	
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-
-	ret
-
-
-; Parser les tubes en partant de l'emplacement (b,c)
-PARSE_TUBE_A_DROITE:
-	push	hl
-	push	de
-	push	bc
-	push	af
-
-	push	bc
-	call	WAITKEY
-	; Recuperer le tube, charger le sprite et afficher
-	call	GET_TUBE
-	call	OIL_LOAD
-	call	OIL_PRINT	
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000001b
-	and	(ix)
-	jp	z, pas_de_haut2
-	
-	; Tester haut et call avec c - 8
-	ld	a, c
-	sub	8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000010b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_HAUT
-	
-		
-pas_de_haut2:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000010b
-	and	(ix)
-	jp	z, pas_de_bas2
-
-	; Tester haut et call avec c + 8
-	ld	a, c
-	add	a, 8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000001b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_BAS
-
-
-pas_de_bas2:
-y_a_un_gauche:
-	pop	bc
-	push	bc
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00001000b
-	and	(ix)
-	jp	z, pas_de_droite2	
-
-	; Tester bas puis call avec b + 8
-	ld	a, b
-	add	a, 8
-	ld	b, a
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000100b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_DROITE
-
-
-pas_de_droite2:
-	pop	bc
-	
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-
-	ret
-
-
-; Parser les tubes en partant de l'emplacement (b,c)
-PARSE_TUBE_EN_BAS:
-	push	hl
-	push	de
-	push	bc
-	push	af
-
-	push	bc
-	call	WAITKEY
-	; Recuperer le tube, charger le sprite et afficher
-	call	GET_TUBE
-	call	OIL_LOAD
-	call	OIL_PRINT	
-
-y_a_un_haut:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000010b
-	and	(ix)
-	jp	z, pas_de_bas3
-
-	; Tester haut et call avec c + 8
-	ld	a, c
-	add	a, 8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000001b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_BAS
-
-
-pas_de_bas3:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000100b
-	and	(ix)
-	jp	z, pas_de_gauche3
-	
-	; Tester bas puis call avec b - 8
-	ld	a, b
-	sub	8
-	ld	b, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00001000b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_GAUCHE
-
-pas_de_gauche3:
-	pop	bc
-	push	bc
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00001000b
-	and	(ix)
-	jp	z, pas_de_droite3
-
-	; Tester bas puis call avec b + 8
-	ld	a, b
-	add	a, 8
-	ld	b, a
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000100b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_DROITE
-
-
-pas_de_droite3:
-	pop	bc
-	
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-
-	ret
-
-; Parser les tubes en partant de l'emplacement (b,c)
-PARSE_TUBE_A_GAUCHE:
-	push	hl
-	push	de
-	push	bc
-	push	af
-
-	push	bc
-	call	WAITKEY
-	; Recuperer le tube, charger le sprite et afficher
-	call	GET_TUBE
-	call	OIL_LOAD
-	call	OIL_PRINT	
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000001b
-	and	(ix)
-	jp	z, pas_de_haut4	
-	
-	; Tester haut et call avec c - 8
-	ld	a, c
-	sub	8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000010b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_HAUT
-	
-		
-pas_de_haut4:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000010b
-	and	(ix)
-	jp	z, pas_de_bas4
-
-	; Tester haut et call avec c + 8
-	ld	a, c
-	add	a, 8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000001b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_EN_BAS
-
-
-pas_de_bas4:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000100b
-	and	(ix)
-	jp	z, pas_de_gauche4
-	
-	; Tester bas puis call avec b - 8
-	ld	a, b
-	sub	8
-	ld	b, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00001000b
-	and	(ix)		
-	jp	z, FIN_PARSING
-
-	call	PARSE_TUBE_A_GAUCHE
-
-pas_de_gauche4:
-y_a_un_droite:
-	pop	bc
-	
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-
-	ret
-
-
-
-
-
+origine:
+	.db	1
+; 0001 = droite
+; 0010 = gauche
+; 0100 = haut
+; 1000 = bas
 
 
 ; Remplir tout la map avec l'huile
