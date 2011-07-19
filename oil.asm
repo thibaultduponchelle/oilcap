@@ -33,6 +33,7 @@ Y_A_UNE_FUITE:
         ld       hl,lost	;charge l'adresse du texte dans hl
         call    _vputs          ;appelle la rom call puts
 	call	WAITKEY 
+	call	WAITKEY 
 
 	pop	af
 	pop	bc
