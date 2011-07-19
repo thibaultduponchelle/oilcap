@@ -17,24 +17,32 @@ PERDU:
 lost:
 	.db "perdu !!!", 0
 
+; Cette routine est appelee lorsque le parsing decouvre une fuite
+Y_A_UNE_FUITE:
+	push	hl
+	push	de
+	push	bc
+	push	af
 
-FIN_PARSING:
 	ld	a, 0
 	ld	(leak), a
-	call	BUFCLR
-	call	BUFCOPY
-	
-	call	PERDU
-	call	WAITKEY
-	
-	pop	bc
-	
+	ld       hl,1
+        ld       (pencol),hl    ;charge la valeur de la ligne de texte sur l'écran
+        ld       hl,1
+        ld       (penrow),hl    ;charge la valeur de la colone de texte.
+        ld       hl,lost	;charge l'adresse du texte dans hl
+        call    _vputs          ;appelle la rom call puts
+	call	WAITKEY 
+
 	pop	af
 	pop	bc
 	pop	de
 	pop	hl
 
 	ret
+
+
+
 ; Tester l'entree du premier tube
 CHECK_FIRST_TUBE:
 	push	hl
@@ -46,7 +54,7 @@ CHECK_FIRST_TUBE:
 	ld	ix, tube_a_tester
 	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
 	and	(ix)		
-	jp	z, fin_du_jeu 
+	call	z, Y_A_UNE_FUITE
 	
 	pop	af
 	pop	bc
@@ -86,9 +94,9 @@ PARSE_TUBE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_HAUT
+	call	nz, PARSE_TUBE_EN_HAUT
 	
 		
 pas_de_haut:
@@ -110,9 +118,9 @@ pas_de_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_BAS
+	call	nz, PARSE_TUBE_EN_BAS
 
 
 pas_de_bas:
@@ -134,9 +142,9 @@ pas_de_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_GAUCHE
+	call	nz, PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche:
 	pop	bc
@@ -157,24 +165,14 @@ pas_de_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_DROITE
+	call	nz, PARSE_TUBE_A_DROITE
 
 
 pas_de_droite:
 	pop	bc
 	
-	jp	pt_fin
-
-perdu0:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
 pt_fin:	
 	pop	af
 	pop	bc
@@ -214,9 +212,9 @@ PARSE_TUBE_EN_HAUT:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_HAUT
+	call	nz, PARSE_TUBE_EN_HAUT
 	
 		
 pas_de_haut1:
@@ -239,9 +237,9 @@ y_a_un_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_GAUCHE
+	call	nz, PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche1:
 	pop	bc
@@ -262,24 +260,14 @@ pas_de_gauche1:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_DROITE
+	call	nz, PARSE_TUBE_A_DROITE
 
 
 pas_de_droite1:
 	pop	bc
 	
-	jp	pt_fin1
-
-perdu1:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
 pt_fin1:	
 	pop	af
 	pop	bc
@@ -319,9 +307,9 @@ PARSE_TUBE_A_DROITE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_HAUT
+	call	nz, PARSE_TUBE_EN_HAUT
 	
 		
 pas_de_haut2:
@@ -343,9 +331,9 @@ pas_de_haut2:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_BAS
+	call	nz, PARSE_TUBE_EN_BAS
 
 
 pas_de_bas2:
@@ -368,24 +356,14 @@ y_a_un_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_DROITE
+	call	nz, PARSE_TUBE_A_DROITE
 
 
 pas_de_droite2:
 	pop	bc
 	
-	jp	pt_fin2
-
-perdu2:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
 pt_fin2:	
 	pop	af
 	pop	bc
@@ -428,9 +406,9 @@ y_a_un_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_BAS
+	call	nz, PARSE_TUBE_EN_BAS
 
 
 pas_de_bas3:
@@ -452,9 +430,9 @@ pas_de_bas3:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_GAUCHE
+	call	nz, PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche3:
 	pop	bc
@@ -475,24 +453,14 @@ pas_de_gauche3:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_DROITE
+	call	nz, PARSE_TUBE_A_DROITE
 
 
 pas_de_droite3:
 	pop	bc
 	
-	jp	pt_fin3
-
-perdu3:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
 pt_fin3:	
 	pop	af
 	pop	bc
@@ -531,9 +499,9 @@ PARSE_TUBE_A_GAUCHE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_HAUT
+	call	nz, PARSE_TUBE_EN_HAUT
 	
 		
 pas_de_haut4:
@@ -555,9 +523,9 @@ pas_de_haut4:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_EN_BAS
+	call	nz, PARSE_TUBE_EN_BAS
 
 
 pas_de_bas4:
@@ -579,24 +547,14 @@ pas_de_bas4:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	jp	z, fin_du_jeu
+	;call	z, Y_A_UNE_FUITE
 
-	call	PARSE_TUBE_A_GAUCHE
+	call	nz, PARSE_TUBE_A_GAUCHE
 
 pas_de_gauche4:
 y_a_un_droite:
 	pop	bc
 	
-	jp	pt_fin4
-
-perdu4:
-	ld	hl, leak
-	ld	(hl), 0
-	call	_dispHL
-	call	WAITKEY
-	call	WAITKEY
-	
-
 pt_fin4:	
 	pop	af
 	pop	bc
