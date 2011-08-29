@@ -9,6 +9,7 @@ PERDU:
         ld       (penrow),hl    ;charge la valeur de la colone de texte.
         ld       hl,lost	;charge l'adresse du texte dans hl
         call    _vputs          ;appelle la rom call puts
+	call	BUFCOPY
 	pop	hl
 	pop	af
 
@@ -23,14 +24,18 @@ Y_A_UNE_FUITE:
 	push	de
 	push	bc
 	push	af
+	
+	call	BUFCLR
+	call	BUFCOPY
+	call	WAITKEY
 
 	ld	a, 0
 	ld	(leak), a
-	ld       hl,1
-        ld       (pencol),hl    ;charge la valeur de la ligne de texte sur l'écran
-        ld       hl,1
-        ld       (penrow),hl    ;charge la valeur de la colone de texte.
-        ld       hl,lost	;charge l'adresse du texte dans hl
+	ld      hl,1
+        ld      (pencol),hl    ;charge la valeur de la ligne de texte sur l'écran
+        ld      hl,1
+        ld      (penrow),hl    ;charge la valeur de la colone de texte.
+        ld      hl,lost	;charge l'adresse du texte dans hl
         call    _vputs          ;appelle la rom call puts
 	call	WAITKEY 
 	call	WAITKEY 
@@ -95,10 +100,10 @@ PARSE_TUBE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_HAUT
-	
+
 		
 pas_de_haut:
 	pop	bc
@@ -119,7 +124,7 @@ pas_de_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_BAS
 
@@ -143,7 +148,7 @@ pas_de_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_GAUCHE
 
@@ -166,7 +171,7 @@ pas_de_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_DROITE
 
@@ -213,7 +218,7 @@ PARSE_TUBE_EN_HAUT:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_HAUT
 	
@@ -238,7 +243,7 @@ y_a_un_bas:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_GAUCHE
 
@@ -261,7 +266,7 @@ pas_de_gauche1:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_DROITE
 
@@ -308,7 +313,7 @@ PARSE_TUBE_A_DROITE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_HAUT
 	
@@ -332,7 +337,7 @@ pas_de_haut2:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_BAS
 
@@ -357,7 +362,7 @@ y_a_un_gauche:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_DROITE
 
@@ -407,7 +412,7 @@ y_a_un_haut:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_BAS
 
@@ -431,7 +436,7 @@ pas_de_bas3:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_GAUCHE
 
@@ -454,7 +459,7 @@ pas_de_gauche3:
 	ld	ix, tube_a_tester
 	ld	a, 00000100b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_DROITE
 
@@ -500,7 +505,7 @@ PARSE_TUBE_A_GAUCHE:
 	ld	ix, tube_a_tester
 	ld	a, 00000010b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_HAUT
 	
@@ -524,7 +529,7 @@ pas_de_haut4:
 	ld	ix, tube_a_tester
 	ld	a, 00000001b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_EN_BAS
 
@@ -548,7 +553,7 @@ pas_de_bas4:
 	ld	ix, tube_a_tester
 	ld	a, 00001000b
 	and	(ix)		
-	;call	z, Y_A_UNE_FUITE
+	call	z, Y_A_UNE_FUITE
 
 	call	nz, PARSE_TUBE_A_GAUCHE
 

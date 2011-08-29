@@ -54,6 +54,8 @@ loop:
 fin:
 	ld	b, 72
 	ld	c, 32
+	
+	call	WAITKEY
 
 	; Verifier le premier tube
 	call	CHECK_FIRST_TUBE
