@@ -1,3 +1,4 @@
+; Position x et y a 0 (depart)
 COORD_RESET:
 	ld	a, 0
 	ld	(xcoord), a
@@ -5,12 +6,17 @@ COORD_RESET:
         ld 	(ycoord), a
 	ret
 
+; Deplacer la position vers la droite
+; (sprites 8x8)
 COORD_DEPLACE_A_DROITE:
 	ld	a, (xcoord)
 	add	a, 8
         ld 	(xcoord), a
 	ret	
 
+; Remettre la position x a 0 
+; Deplacer la position y de 8 vers le bas
+; (Car il s'agit de sprite 8x8)
 COORD_RETOUR_A_LA_LIGNE:
 	ld	a, 0
         ld 	(xcoord), a
@@ -21,19 +27,17 @@ COORD_RETOUR_A_LA_LIGNE:
 	
 
 	
-
+; Cette fonction sert a copier l'ecran de titre
+; Il s'agit d'afficher des tubes et non de simplement copier
+; des octets a l'ecran
 ; hl = map adress
 TITLE_LOAD:
-	push	hl
-	push	de
-	push	bc
-	push	af
 
 	; On commence en haut a gauche
 	call	COORD_RESET
 	
 
-	; coordonnee de depart
+	; valeur de la boucle au depart
 	ld	a, 0
 	ld	e, 8
 
@@ -69,24 +73,15 @@ tl_fin:
 	call	BUFCOPY
 
 	; afficher "press a key"
-	ld       hl,24
-        ld       (pencol),hl   ;charge la valeur de la ligne de texte sur l'écran
-        ld       hl,45
-        ld       (penrow),hl   ;charge la valeur de la colone de texte.
+	ld       a,24
+        ld       (pencol),a   ;charge la valeur de la ligne de texte sur l'écran
+        ld       a,45
+        ld       (penrow),a   ;charge la valeur de la colone de texte.
         ld       hl,press_a_key;charge l'adresse du texte dans hl
         call    _vputs        ;appelle la rom call puts
 	
-	call	WAITKEY
-	
-	ld	a, 1
-	ld	(tub_index), a
-
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-	
 	ret
+
 
 press_a_key:
 	.db $05, " press a key...", 0
