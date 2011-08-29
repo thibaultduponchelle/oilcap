@@ -873,14 +873,17 @@ OIL_PRINT:
 
 	ret
 
+; Depart de l'huile 
 oilxcoord:
 	.db 8
+
 oilycoord:
 	.db 16
 
 tube_squelette:
 	.db 0
 
+; Le tube a tester 
 tube_a_tester:
 	.db 0
 

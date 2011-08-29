@@ -18,15 +18,17 @@ START:
 	call	BUFCLR
 	
 	; On met l'index sur le premier tube
-	ld	hl, tub_index
-	ld	(hl), 1
+	; Il s'agit d'un curseur sur la liste
+	ld	a, 1
+	ld	(tub_index), a
 	call	TITLE_LOAD
+	call	WAITKEY
 	call	BUFCLR
 
 game:	
-	; On REmet l'index sur le premier tube (title_load utilise l'index)
-	ld	hl, tub_index
-	ld	(hl), 1
+	; On Remet l'index sur le premier tube (title_load utilise l'index)
+	ld	a, 1
+	ld	(tub_index), a
 	call	FOCUS_INIT
 	;call	INIT
 	call	MAP_LOAD
@@ -50,9 +52,6 @@ loop:
 
 ; Si le temps est ecoule
 fin:
-	ld	b, 6
-
-finboucle:
 	ld	b, 72
 	ld	c, 32
 
@@ -61,14 +60,9 @@ finboucle:
 	ld	a, (leak)
 	cp	0
 	call	nz, PARSE_TUBE ; verifier les suivants
-	
-	ld	a, (leak)
-	cp	0
-	call	z, PERDU
-	call	WAITKEY
-	
 
 fin_du_jeu:
+	call	WAITKEY
 	call	BUFCLR
 	ret
 	.end
