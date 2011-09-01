@@ -29,12 +29,22 @@ load_level_fin:
 
 ; Passer au niveau superieur
 NEXT_LEVEL:
+	ld	a, (score)
+	cp	(score_a_battre)
 	ld	hl, level
 	inc	(hl)
+	call	LOAD_LEVEL
+	call	INIT
+	call	MATRIX_RESET
 	jp	game
 	
 	ret
 	
 
+
 level:
 	.db 1
+
+score_a_battre:
+	.db 101
+

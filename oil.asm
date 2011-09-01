@@ -38,6 +38,9 @@ CHECK_FIRST_TUBE:
 	push	bc
 	push	af
 
+	call	INCREASE_SCORE
+	call	PRINT_SCORE
+
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
 	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
@@ -51,131 +54,15 @@ CHECK_FIRST_TUBE:
 	
 	ret
 
-
-; Parser les tubes en partant de l'emplacement (b,c)
-PARSE_TUBE:
-	push	hl
-	push	de
-	push	bc
-	push	af
-
-	push	bc
-	;call	WAITKEY
-	; Recuperer le tube, charger le sprite et afficher
-	call	GET_TUBE
-	call	OIL_LOAD
-	call	OIL_PRINT	
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000001b
-	and	(ix)
-	jp	z, pas_de_haut	
-	
-	; Tester haut et call avec c - 8
-	ld	a, c
-	sub	8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000010b
-	and	(ix)		
-	call	z, Y_A_UNE_FUITE
-
-	call	nz, PARSE_TUBE_EN_HAUT
-
-		
-pas_de_haut:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000010b
-	and	(ix)
-	jp	z, pas_de_bas
-
-	; Tester haut et call avec c + 8
-	ld	a, c
-	add	a, 8
-	ld	c, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000001b
-	and	(ix)		
-	call	z, Y_A_UNE_FUITE
-
-	call	nz, PARSE_TUBE_EN_BAS
-
-
-pas_de_bas:
-	pop	bc
-	push	bc
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00000100b
-	and	(ix)
-	jp	z, pas_de_gauche
-	
-	; Tester bas puis call avec b - 8
-	ld	a, b
-	sub	8
-	ld	b, a
-
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00001000b
-	and	(ix)		
-	call	z, Y_A_UNE_FUITE
-
-	call	nz, PARSE_TUBE_A_GAUCHE
-
-pas_de_gauche:
-	pop	bc
-	push	bc
-
-	; Tester la morphologie du tube courant	
-	call	GET_TUBE
-	ld	ix, tube_squelette
-	ld	a, 00001000b
-	and	(ix)
-	jp	z, pas_de_droite	
-
-	; Tester bas puis call avec b + 8
-	ld	a, b
-	add	a, 8
-	ld	b, a
-	call	GET_TUBE_TEST
-	ld	ix, tube_a_tester
-	ld	a, 00000100b
-	and	(ix)		
-	call	z, Y_A_UNE_FUITE
-
-	call	nz, PARSE_TUBE_A_DROITE
-
-
-pas_de_droite:
-	pop	bc
-	
-pt_fin:	
-	pop	af
-	pop	bc
-	pop	de
-	pop	hl
-
-	ret
-
-
 ; Parser les tubes en partant de l'emplacement (b,c)
 PARSE_TUBE_EN_HAUT:
 	push	hl
 	push	de
 	push	bc
 	push	af
+
+	call	INCREASE_SCORE
+	call	PRINT_SCORE
 
 	push	bc
 	call	WAITKEY
@@ -272,6 +159,9 @@ PARSE_TUBE_A_DROITE:
 	push	bc
 	push	af
 
+	call	INCREASE_SCORE
+	call	PRINT_SCORE
+
 	push	bc
 	call	WAITKEY
 	; Recuperer le tube, charger le sprite et afficher
@@ -367,6 +257,9 @@ PARSE_TUBE_EN_BAS:
 	push	de
 	push	bc
 	push	af
+	
+	call	INCREASE_SCORE
+	call	PRINT_SCORE
 
 	push	bc
 	call	WAITKEY
@@ -463,6 +356,9 @@ PARSE_TUBE_A_GAUCHE:
 	push	de
 	push	bc
 	push	af
+
+	call	INCREASE_SCORE
+	call	PRINT_SCORE
 
 	push	bc
 	call	WAITKEY
@@ -851,7 +747,7 @@ OIL_PRINT:
 	ld	a, b
 	ld	hl, oil
 	call	DRWSPR
-	call	BUFCOPY
+	call	FASTCOPY
 	
 	pop	af
 	pop	de

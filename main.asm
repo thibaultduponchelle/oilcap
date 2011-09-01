@@ -63,6 +63,8 @@ fin:
 	cp	0
 	call	nz, PARSE_TUBE_A_GAUCHE ; verifier les suivants
 
+	call	NEXT_LEVEL
+
 fin_du_jeu:
 	call	WAITKEY
 	call	BUFCLR
