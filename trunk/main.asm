@@ -61,7 +61,7 @@ fin:
 	call	CHECK_FIRST_TUBE
 	ld	a, (leak)
 	cp	0
-	call	nz, PARSE_TUBE ; verifier les suivants
+	call	nz, PARSE_TUBE_A_GAUCHE ; verifier les suivants
 
 fin_du_jeu:
 	call	WAITKEY
