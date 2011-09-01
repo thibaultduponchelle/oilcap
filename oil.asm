@@ -1,22 +1,3 @@
-PERDU:
-	push	af
-	push	hl
-	call	BUFCLR
-	call	BUFCOPY
-	ld       hl,24
-        ld       (pencol),hl    ;charge la valeur de la ligne de texte sur l'écran
-        ld       hl,45
-        ld       (penrow),hl    ;charge la valeur de la colone de texte.
-        ld       hl,lost	;charge l'adresse du texte dans hl
-        call    _vputs          ;appelle la rom call puts
-	call	BUFCOPY
-	pop	hl
-	pop	af
-
-	ret
-
-lost:
-	.db "perdu !!!", 0
 
 ; Cette routine est appelee lorsque le parsing decouvre une fuite
 Y_A_UNE_FUITE:
@@ -25,9 +6,9 @@ Y_A_UNE_FUITE:
 	push	bc
 	push	af
 	
+	call	WAITKEY
 	call	BUFCLR
 	call	BUFCOPY
-	call	WAITKEY
 
 	ld	a, 0
 	ld	(leak), a
@@ -38,7 +19,6 @@ Y_A_UNE_FUITE:
         ld      hl,lost	;charge l'adresse du texte dans hl
         call    _vputs          ;appelle la rom call puts
 	call	WAITKEY 
-	call	WAITKEY 
 
 	pop	af
 	pop	bc
@@ -47,6 +27,8 @@ Y_A_UNE_FUITE:
 
 	ret
 
+lost:
+	.db "perdu !!!", 0
 
 
 ; Tester l'entree du premier tube
