@@ -1,6 +1,6 @@
 
 ; On passe ici lorsqu'on pose un tuyau
-; Il s'agit de tester si l'emplacement est deja pris et de perdre ou ajouter des points
+; Il s'agit de tester si l'emplacement est deja pris et de perdre des points si c'est le cas
 
 UPDATE_SCORE:
 
@@ -57,7 +57,7 @@ lecturematrice3:
 	
 
 inc_score:
-	call	INCREASE_SCORE
+	;call	INCREASE_SCORE
 	jp	fin_update_score
 	
 dec_score:
@@ -95,6 +95,7 @@ INCREASE_SCORE:
 	cp	255
 	jp	z, ne_pas_augmenter
 	inc	a
+	inc	a
 	ld	(hl), a
 
 ne_pas_augmenter:
@@ -116,7 +117,6 @@ DECREASE_SCORE:
 	ld	a, (hl)
 	cp	3
 	jp	m, ne_pas_decrementer
-	dec	a
 	dec	a
 	ld	(hl), a
 
