@@ -30,21 +30,47 @@ load_level_fin:
 ; Passer au niveau superieur
 NEXT_LEVEL:
 	ld	a, (score)
-	cp	(score_a_battre)
+	ld	hl, (pointeur_sur_score_a_battre)
+	ld	h, 0
+	ld	l, (hl)
+	call	_dispHL
+	call	waitkey
+	cp	(hl)
+	jp	m, nl_fin
+	ld	hl, pointeur_sur_score_a_battre ; Se deplacer dans la liste des scores a battre
+	inc	(hl)
 	ld	hl, level
 	inc	(hl)
+	call	PRINT_LEVEL_TRANSITION
 	call	LOAD_LEVEL
 	call	INIT
 	call	MATRIX_RESET
 	jp	game
+
+nl_fin:
+	; afficher un truc du genre "game over"
 	
 	ret
-	
 
+PRINT_LEVEL_TRANSITION:
+	call	BUFCLR
+	call	BUFCOPY
+	ld      a,20
+        ld      (pencol),a   ;charge la valeur de la ligne de texte sur l'écran
+        ld      a,30
+        ld      (penrow),a   ;charge la valeur de la colone de texte.
+        ld      hl,next_level_string	;charge l'adresse du texte dans hl
+        call    _vputs          ;appelle la rom call puts
+	call	WAITKEY 
+	
+	ret
+
+
+	
+next_level_string:
+	.db "next level", 0
 
 level:
 	.db 1
 
-score_a_battre:
-	.db 101
 

@@ -59,7 +59,11 @@ liste_level_one:
 	.db 00011110b, 00001100b, 11000011b, 00001101b, 00001101b
 
 liste_level_two:
+	.db 01011010b   ; coude bas droite
+	.db 10000111b,	; T ouvert a gauche 
 	.db 11000011b,	; tube vertical
+	.db 11000011b,	; tube vertical
+	.db 11100001b, 	; U ouvert en haut
 	.db 11000011b,  ; tube vertical
 	.db 11000011b,  ; tube vertical
 	.db 11000011b,	; tube vertical

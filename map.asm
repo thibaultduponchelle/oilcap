@@ -165,7 +165,7 @@ lecturematrice2:
 	ld	hl, tub_index
 	ld	a, (hl)
 	ld	b, a
-	ld	ix, liste_level_one
+	call	LOAD_LEVEL
 	dec	ix
 
 inc_ix2:
@@ -190,10 +190,29 @@ MATRIX_RESET:
 	push	bc
 	push	af
 
-	ld	hl, map_reset
-	ld	de, map
-	ld	bc, 80
-	ldir	
+	ld	b, 80
+mr_loop:
+	ld	a,b
+	ld	hl, map
+	ld	(hl), a
+	inc	hl
+	djnz	mr_loop
+
+	;ld	hl, map_reset
+	;ld	de, map
+	;ld	bc, 80
+	;ldir	
+
+	call	BUFCLR
+	ld	b, 72
+	ld	c, 32
+	call	GET_TUBE
+	ld	de, tube_squelette
+	ld	h, 0
+	ld	a, (de)
+	ld	l, a
+	call	_dispHL
+
 	
 	pop	af
 	pop	bc
