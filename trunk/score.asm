@@ -150,6 +150,11 @@ PRINT_SCORE:
 
 	ret	
 
-
 score:	
 	.db 100
+
+pointeur_sur_score_a_battre:
+	.dw 0
+score_a_battre:
+	.db 90, 95, 100, 105
+

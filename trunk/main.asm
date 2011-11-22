@@ -24,13 +24,13 @@ START:
 	call	TITLE_LOAD
 	call	WAITKEY
 	call	BUFCLR
+	call	FIRST_LEVEL_INIT
 
 game:	
 	; On Remet l'index sur le premier tube (title_load utilise l'index)
 	ld	a, 1
 	ld	(tub_index), a
 	call	FOCUS_INIT
-	;call	INIT
 	call	MAP_LOAD
 	call	PRINT_OCLOCK
 	call	UPDATE_TIMER
@@ -46,24 +46,29 @@ loop:
 	or	a
 	jp 	z, fin
 	
-	
 	call	UPDATE_TIMER
 	jp	loop
 
-; Si le temps est ecoule
 fin:
 	ld	b, 72
 	ld	c, 32
 	
 	call	WAITKEY
 
+	ld	a, 1
+	ld	(leak), a
+
 	; Verifier le premier tube
 	call	CHECK_FIRST_TUBE
 	ld	a, (leak)
 	cp	0
 	call	nz, PARSE_TUBE_A_GAUCHE ; verifier les suivants
+	call	PARSE_TUBE_A_GAUCHE ; verifier les suivants
 
-	call	NEXT_LEVEL
+	; Ici on verifie si le circuit n'a pas de fuite
+	ld	a, (leak)
+	cp	1
+	call	z, NEXT_LEVEL
 
 fin_du_jeu:
 	call	WAITKEY

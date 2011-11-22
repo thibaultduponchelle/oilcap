@@ -131,14 +131,13 @@ ok:
 	ld	a, 10
 	ld	(hl), a 	
 	
-	;ld	ix, liste_level_one
 	call	LOAD_LEVEL
 	call	TUBE_LOAD
 	call	UPDATE_SCORE
 	call	PRINT_SCORE
 	call	MATRIX_SAVE_BLOCK
 	call	TUBE_PRINT
-	;ld	ix, liste_level_one   ;FIXME
+
 	call	LOAD_LEVEL
 	call	TUBE_LOAD
 	call	TUBE_PREVIEW_PRINT

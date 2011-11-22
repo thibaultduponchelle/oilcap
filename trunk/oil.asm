@@ -43,7 +43,7 @@ CHECK_FIRST_TUBE:
 
 	call	GET_TUBE_TEST
 	ld	ix, tube_a_tester
-	ld	a, 000001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
+	ld	a, 00001000b    ; On cherche a savoir si le premier tuyau est relie au robinet
 	and	(ix)		
 	call	z, Y_A_UNE_FUITE
 	
